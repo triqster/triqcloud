@@ -1,0 +1,51 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vaultwarden
+  namespace: vaultwarden
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: vaultwarden
+      version: 0.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: gissilabs
+        namespace: flux-system
+  values:
+    vaultwarden:
+      domain: https://bw.triqster.eu
+      allowSignups: false
+      allowInvitation: true
+      smtp:
+        enabled: true
+        host: smtp.gmail.com
+        port: 587
+        ssl: true
+        explicitTLS: false
+        from: jcoelingh@gmail.com
+        fromName: "Joost C"
+        existingSecret: smtp
+        heloName: bw.triqster.eu
+        timeout: 15
+    ingress:
+      enabled: true
+      className: nginx
+      host: bw.triqster.eu
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+      tls:
+      - secretName: vaultwarden-tls
+        hosts:
+        - bw.triqster.eu
+    persistence:
+      enabled: true
+    resources:
+      requests:
+        cpu: 100m
+        memory: 100Mi
+      limits:
+        cpu: 2000m
+        memory: 2048Mi
