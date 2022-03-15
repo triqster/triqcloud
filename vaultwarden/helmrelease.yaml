@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: vaultwarden
-      version: 0.4.0
+      version: 0.5.1
       sourceRef:
         kind: HelmRepository
         name: gissilabs
@@ -47,5 +47,5 @@ spec:
         cpu: 100m
         memory: 100Mi
       limits:
-        cpu: 2000m
-        memory: 2048Mi
+        cpu: 1000m
+        memory: 1024Mi
