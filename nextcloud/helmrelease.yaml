@@ -15,6 +15,7 @@ spec:
         namespace: flux-system
   values:
     ingress:
+      className: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt
         nginx.ingress.kubernetes.io/proxy-body-size: 1024m 
@@ -37,6 +38,18 @@ spec:
         secretName: nextcloud-admin
         usernameKey: username
         passwordKey: password
+    mariadb:
+      enabled: true
+      architecture: standalone
+      auth:
+        existingSecret: nextcloud-mariadb
+        database: nextcloud
+        username: nextcloud
+      primary:
+        persistence:
+          enabled: true
+          accessMode: ReadWriteOnce
+          size: 20Gi
     persistence:
       enabled: true
       size: 200Gi
